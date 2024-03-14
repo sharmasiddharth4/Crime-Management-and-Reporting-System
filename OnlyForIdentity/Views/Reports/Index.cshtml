@@ -1,0 +1,69 @@
+﻿@model IEnumerable<OnlyForIdentity.Models.Report>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Reports</h1>
+
+<p>
+    <a asp-action="Create">Add a Report</a>
+</p>
+@if (User.IsInRole("Admin"))
+{
+    <form method="get" action="">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="searchQuery" placeholder="Search by Description">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    User who Registered
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @item.UserId
+                    </td>
+                }
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ReportId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ReportId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ReportId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
